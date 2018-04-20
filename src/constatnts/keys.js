@@ -1,0 +1,1 @@
+export const OPEN_WEATHER = '92bcfe14ea5b0814de94f29b58722c2a';
