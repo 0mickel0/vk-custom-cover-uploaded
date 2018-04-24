@@ -1,6 +1,4 @@
 export const drawCover = (refs, props, defImg) => {
-
-  debugger;
   if(defImg) {
     let img = new Image();
     img.src = defImg.path[0].src;
@@ -29,6 +27,7 @@ const addDataToCover = (refs, img, props) =>{
   ctx.fillStyle = '#000';
   ctx.fillText(props.weather.main.temp, 1230, 75);
   ctx.fillText(props.weather.name, 1230, 140);
+  ctx.fillText(props.weather.weather[0].icon, 1230, 180);
   ctx.fillStyle = '#fff';
   ctx.fillText(date, 100, 140);
 };

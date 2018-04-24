@@ -1,13 +1,9 @@
 import axios from "axios";
-import { FETCH_WALL_ITEMS,
-  CREATE_WALL_ITEM,
-  FETCH_USERS,
-  FETCH_UPLOAD_COVER_URL,
-  POST_TO_UPLOAD_URL} from '../constatnts/ActionType'
+import { FETCH_WALL_ITEMS,CREATE_WALL_ITEM,FETCH_USERS} from '../constatnts/ActionType'
 
 const ROOT_URL = "https://api.vk.com/method/";
 const API_V = "&v=5.74";
-const APP_ID="5853770";
+// const APP_ID="5853770";
 const GROUP_ID = "126373581";
 const COUNT = "&count=20";
 const FIELDS = "&fields=photo,screen_name,sex,bdate,city,country,photo_200_orig,online,status";

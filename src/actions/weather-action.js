@@ -1,7 +1,7 @@
 import axios from "axios";
-import { FETCH_WEATHER, UPDATE_WEATHER_SETTING, SET_CURRENT_COUNTRY } from '../constatnts/ActionType'
+import { FETCH_WEATHER, UPDATE_WEATHER_SETTING } from '../constatnts/ActionType'
 
-const API_KEY = "6a78596d062df78380eff5944c4e5567";
+const API_KEY = "5e8787cabe48d22f1a21f7f8635196c4";
 const ROOT_URL = `http://api.openweathermap.org/data/2.5/weather?appid=${API_KEY}`;
 
 export function fetchWeather(city) {
@@ -14,21 +14,12 @@ export function fetchWeather(city) {
   };
 }
 
-export function setCurrentCountry(settings) {
-  return {
-    type: SET_CURRENT_COUNTRY,
-    payload: settings
-  };
-}
-
 const updateWeatherSettings = (setting) => {
-  console.log(setting);
   return dispatch => {
     return dispatch({
       type: UPDATE_WEATHER_SETTING,
       payload: Promise.all([
-        dispatch(fetchWeather(setting.country)),
-        dispatch(setCurrentCountry(setting.country))
+        dispatch(fetchWeather(setting))
       ])
     })
   }

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { fetchWeather } from "../actions/weather-action";
+import updateWeatherSettings from "../actions/weather-action";
 
 class SearchBarWeather extends Component {
   constructor(props) {
@@ -18,8 +18,7 @@ class SearchBarWeather extends Component {
   onFormSubmit(event) {
     event.preventDefault();
     if(this.state.term){
-      this.props.fetchWeather(this.state.term);
-      this.setState({ term: "" });
+      this.props.updateWeatherSettings(this.state.term);
     }
   }
 
@@ -33,7 +32,7 @@ class SearchBarWeather extends Component {
           onChange={this.onInputChange}
         />
         <span className="input-group-btn">
-          <button type="submit" className="btn btn-secondary">Submit</button>
+          <button type="submit" className="btn btn-secondary">Submit1</button>
         </span>
       </form>
     );
@@ -41,7 +40,7 @@ class SearchBarWeather extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchWeather }, dispatch);
+  return bindActionCreators({ updateWeatherSettings }, dispatch);
 }
 
 export default connect(null, mapDispatchToProps)(SearchBarWeather);

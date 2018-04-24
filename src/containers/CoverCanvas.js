@@ -1,27 +1,36 @@
 import React, { Component } from 'react'
 import { connect } from "react-redux";
 import { fetchUploadCoverUrl } from "../actions/vk-actions";
-import { fetchWeather } from "../actions/weather-action";
 import ImageUploader from "../components/CoverUploader"
+import Card from '../components/Card'
 import { dataURItoBlob } from "../utils/image-transformation"
 import { drawCover } from "../utils/draw-cover"
+import SearchBarWeather from './search_bar'
 
 class CoverCanvas extends Component {
   constructor(props) {
     super(props);
+    this.state = { icon: `./weather/${this.props.weather.weather[0].icon}.svg` };
     this.postCover = this.postCover.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
-    console.log(this.child.heading.getDOMNode());
-    // let img = this.refs.image;
-    // img.onload = () => {
-    //   drawCover(this.refs, this.props);
-    // }
+    let img = this.refs.image;
+    img.onload = () => {
+      drawCover(this.refs, this.props);
+    }
   }
 
-  handleChange(target) {
+  componentWillReceiveProps(newProps){
+    if (this.props.weather !== newProps.weather) {
+      this.setState({icon : `./weather/${this.props.weather.weather[0].icon}.svg`});
+      console.log(this.state.icon);
+      drawCover(this.refs, newProps)
+    }
+  }
+
+  handleChange =(target) => {
     let fileReader = new FileReader();
     fileReader.readAsDataURL(target[0]);
     fileReader.onload = () => {
@@ -29,11 +38,10 @@ class CoverCanvas extends Component {
       img = new Image();
       img.src = fileReader.result;
       img.onload = (img) => {
-        debugger;
         drawCover(this.refs, this.props, img);
       }
     };
-  }
+  };
 
   postCover() {
     let blob = dataURItoBlob(this.refs.canvas.toDataURL());
@@ -45,12 +53,15 @@ class CoverCanvas extends Component {
       <div>
         <div className="cover-canvas-wrapper">
           <canvas className="cover-canvas" ref="canvas" width={1590} height={400} />
-          <input type="file" accept="image/*" onChange={ (e) => this.handleChange(e.target.files) } />
+          <img ref="image" className="cover-img" src={this.props.upload_url.src} alt=""/>
+
+          <img src={this.state.icon} alt=""/>
+          <ImageUploader imgUploaded={this.handleChange}/>
+          <Card title="Weather Settings">
+            <SearchBarWeather/>
+          </Card>
+
           <button className="btn btn-secondary" onClick={ () => this.postCover() }>post cover</button>
-          <ImageUploader
-            ref={(node) => { this.child = node; }}
-            canvasRef={this.refs}
-          />
         </div>
       </div>
     )
@@ -61,4 +72,4 @@ function mapStateToProps({ weather, upload_url }) {
   return { weather, upload_url };
 }
 
-export default connect(mapStateToProps, {fetchUploadCoverUrl, fetchWeather})(CoverCanvas);
+export default connect(mapStateToProps, {fetchUploadCoverUrl})(CoverCanvas);
