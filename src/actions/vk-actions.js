@@ -50,7 +50,7 @@ export function fetchUploadCoverUrl(image) {
 }
 
 export function postToUploadUrl(response, image) {
-  UPL_URL = response.data.response.upload_url + API_KEY;
+  UPL_URL = response.data.response.settings + API_KEY;
   const fd = new FormData();
   fd.append('photo', image);
   axios({

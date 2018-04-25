@@ -19,9 +19,9 @@ class ImageUploader extends Component {
   }
 }
 
-function mapStateToProps({ weather, upload_url }) {
+function mapStateToProps({ weather, settings }) {
   return {
-    weather, upload_url
+    weather, settings
   };
 }
 

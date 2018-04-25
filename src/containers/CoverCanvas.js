@@ -10,7 +10,10 @@ import SearchBarWeather from './search_bar'
 class CoverCanvas extends Component {
   constructor(props) {
     super(props);
-    this.state = { icon: `./weather/${this.props.weather.weather[0].icon}.svg` };
+    this.state = {
+      icon: `./weather/${this.props.weather.weather[0].icon}.svg`,
+      selectValue: '1'
+    };
     this.postCover = this.postCover.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
@@ -26,7 +29,10 @@ class CoverCanvas extends Component {
     if (this.props.weather !== newProps.weather) {
       this.setState({icon : `./weather/${this.props.weather.weather[0].icon}.svg`});
       console.log(this.state.icon);
-      drawCover(this.refs, newProps)
+      let img = this.refs.weatherImg;
+      img.onload = () => {
+        drawCover(this.refs, newProps)
+      }
     }
   }
 
@@ -48,28 +54,43 @@ class CoverCanvas extends Component {
     fetchUploadCoverUrl(blob);
   }
 
+  timeHandleChange=(e)=>{
+    this.setState({selectValue: e.target.value});
+  };
+
   render() {
+    let url =`./weather/${this.props.weather.weather[0].icon}.svg`
     return(
       <div>
         <div className="cover-canvas-wrapper">
           <canvas className="cover-canvas" ref="canvas" width={1590} height={400} />
-          <img ref="image" className="cover-img" src={this.props.upload_url.src} alt=""/>
+          <img ref="image" className="cover-img" src={this.props.settings.defaultCoverSrc} alt=""/>
 
-          <img src={this.state.icon} alt=""/>
+          <img ref="weatherImg" className="weather-img" src={ url } alt=""/>
           <ImageUploader imgUploaded={this.handleChange}/>
           <Card title="Weather Settings">
             <SearchBarWeather/>
           </Card>
 
-          <button className="btn btn-secondary" onClick={ () => this.postCover() }>post cover</button>
+          <Card title="Post option">
+            <select
+              value={this.state.selectValue}
+              onChange={this.timeHandleChange} >
+              <option value="5">5 minutes</option>
+              <option value="10">10 minutes</option>
+              <option value="15">15 minutes</option>
+            </select>
+            <button className="btn btn-secondary" onClick={ () => this.postCover() }>post cover</button>
+          </Card>
+
         </div>
       </div>
     )
   }
 }
 
-function mapStateToProps({ weather, upload_url }) {
-  return { weather, upload_url };
+function mapStateToProps({ weather, settings }) {
+  return { weather, settings };
 }
 
 export default connect(mapStateToProps, {fetchUploadCoverUrl})(CoverCanvas);

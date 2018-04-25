@@ -4,7 +4,7 @@ import WeatherReducer from "./reducer_weather";
 import { reducer as formReducer } from "redux-form";
 
 const rootReducer = combineReducers({
-  upload_url: CoverUrlReducer,
+  settings: CoverUrlReducer,
   weather: WeatherReducer,
   form: formReducer
 });
